@@ -168,14 +168,38 @@ class SimpleTopic(TreeNode):
             return sum 
         return binary2ten(dfs(root))
 
+    def tree2str(self, root: TreeNode) -> str:
+    	'''
+		desc: 根据二叉树创建字符串
+			  你需要采用前序遍历的方式，将一个二叉树转换成一个由括号和整数组成的字符串。
+			  空节点则用一对空括号 "()" 表示。而且你需要省略所有不影响字符串与原始二叉树
+			  之间的一对一映射关系的空括号对。
+    	'''
+    	def dfs(root):
+            if root is None:
+                return "()"
+            if not root.left and not root.right:
+                return "("+str(root.val)+")"
+            left = dfs(root.left)
+            right = dfs(root.right)
+            if right=='()':
+                right = ''
+            return "("+str(root.val)+left+right+")"
+        return dfs(t)[1:-1]
 
+    def isSymmetric(self, root: TreeNode) -> bool:
+    	'''
+		desc: 对称的二叉树
+			  请实现一个函数，用来判断一棵二叉树是不是对称的。
+			  如果一棵二叉树和它的镜像一样，那么它是对称的。
+			  例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
+    	'''
+    	def recur(L, R):
+            if not L and not R: return True
+            if not L or not R or L.val != R.val: return False
+            return recur(L.left, R.right) and recur(L.right, R.left)
 
-
-
-
-
-
-
+        return recur(root.left, root.right) if root else True
 
 
 
