@@ -218,8 +218,70 @@ class SimpleTopic(TreeNode):
         merged.left = self.mergeTrees(t1.left, t2.left)
         merged.right = self.mergeTrees(t1.right, t2.right)
         return merged
-    
 
+    def maxDepth(self, root: TreeNode) -> int:
+    	'''
+		desc: 二叉树的最大深度
+    	'''
+        if root is None:
+            return 0
+        left = self.maxDepth(root.left)
+        right = self.maxDepth(root.right)
+        return max(left, right) + 1
+    
+    def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
+    	'''
+		desc: 二叉树的层次遍历 II
+			  给定一个二叉树，返回其节点值自底向上的层次遍历。 
+			  （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+    	'''
+        if root is None:
+            return []
+        stack = [root]
+        n = len(stack)
+        output = []
+        tmp = []
+        new_stack = []
+        while stack:
+            while n>0:
+                node = stack.pop(0)
+                tmp.append(node.val)
+                if node.left:
+                    new_stack.append(node.left)
+                if node.right:
+                    new_stack.append(node.right)
+                n -= 1
+            output.append(tmp)
+            tmp = []
+            stack = new_stack
+            n = len(stack)
+            new_stack = []
+
+        return output[::-1]
+
+    def invertTree(self, root: TreeNode) -> TreeNode:
+    	'''
+		desc: 翻转二叉树
+    	'''
+        if not root:
+            return root
+        
+        left = self.invertTree(root.left)
+        right = self.invertTree(root.right)
+        root.left, root.right = right, left
+        return root
+    def lowestCommonAncestor(self, root: TreeNode, p: int, q: int) -> TreeNode:
+    	'''
+		desc: 二叉搜索树的最近公共祖先
+    	'''
+    	if root is None:
+            return root
+        if root.val>p.val and root.val>q.val:
+            return self.lowestCommonAncestor(root.left, p, q)
+        elif root.val<p.val and root.val<q.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+        else:
+            return root
 
 
 
