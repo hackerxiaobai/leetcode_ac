@@ -1,5 +1,5 @@
-from base import TreeNode, NTreeNode
-
+from .base import TreeNode, NTreeNode
+from typing import List
 '''
 desc: 树相关简单题
 '''
@@ -91,24 +91,24 @@ class SimpleTopic(TreeNode):
 		'''
 		def midorder(root):
 			# 中序遍历
-            if root is None:
-                return []
-            val = root.val
-            left = midorder(root.left)
-            right = midorder(root.right)
-            return left + [val] + right
+			if root is None:
+				return []
+			val = root.val
+			left = midorder(root.left)
+			right = midorder(root.right)
+			return left + [val] + right
         
         cur = head = TreeNode(None)
-        for v in helper(root):
+        for v in midorder(root):
             cur.right = TreeNode(v)
             cur = cur.right
-        return head.right
+		return head.right
 
-    def kthLargest(self, root: TreeNode, k: int) -> int:
-    	'''
+	def kthLargest(self, root: TreeNode, k: int) -> int:
+		'''
 		desc:  二叉搜索树的第k大节点
-			   给定一棵二叉搜索树，请找出其中第k大的节点。
-    	'''
+				给定一棵二叉搜索树，请找出其中第k大的节点。
+		'''
     	def dfs(root):
             if not root: return
             dfs(root.right)
@@ -116,12 +116,11 @@ class SimpleTopic(TreeNode):
             self.k -= 1
             if self.k == 0: self.res = root.val
             dfs(root.left)
+		self.k = k
+		dfs(root)
+		return self.res
 
-        self.k = k
-        dfs(root)
-        return self.res
-
-    def hasPathSum(self, root: TreeNode, sum: int) -> bool:
+	def hasPathSum(self, root: TreeNode, sum: int) -> bool:
     	'''
 		desc: 路径总和
 			  给定一个二叉树和一个目标和，
@@ -200,6 +199,26 @@ class SimpleTopic(TreeNode):
             return recur(L.left, R.right) and recur(L.right, R.left)
 
         return recur(root.left, root.right) if root else True
+
+    def mergeTrees(self, t1: TreeNode, t2: TreeNode) -> TreeNode:
+    	'''
+		desc: 合并二叉树
+			  给定两个二叉树，想象当你将它们中的一个覆盖到另一个上时，
+			  两个二叉树的一些节点便会重叠。
+			  你需要将他们合并为一个新的二叉树。合并的规则是如果两个节点重叠，
+			  那么将他们的值相加作为节点合并后的新值，
+			  否则不为 NULL 的节点将直接作为新二叉树的节点。
+    	'''
+    	if not t1:
+            return t2
+        if not t2:
+            return t1
+        
+        merged = TreeNode(t1.val + t2.val)
+        merged.left = self.mergeTrees(t1.left, t2.left)
+        merged.right = self.mergeTrees(t1.right, t2.right)
+        return merged
+    
 
 
 
