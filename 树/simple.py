@@ -138,6 +138,7 @@ class SimpleTopic(TreeNode):
     		right = dfs(root.right, target-root.val)
     		for i in left+right:
     			ret.append([root.val]+i)
+            return ret
     	return dfs(root, sum)
 
     def sumRootToLeaf(self, root: TreeNode) -> int:
@@ -282,6 +283,53 @@ class SimpleTopic(TreeNode):
             return self.lowestCommonAncestor(root.right, p, q)
         else:
             return root
+
+     def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:
+        '''
+        desc: 相同的树
+        给定两个二叉树，编写一个函数来检验它们是否相同。
+        如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
+        '''
+        def dfs(p, q):
+            if not p and not q:
+                return True
+            if not p and q or p and not q or p.val!=q.val:
+                return False
+            else:
+                return dfs(p.left, q.left) and dfs(p.right, q.right)
+
+        return dfs(p, q)
+
+    def getMinimumDifference(self, root: TreeNode) -> int:
+        '''
+        desc: 二叉搜索树的最小绝对差
+        给你一棵所有节点为非负值的二叉搜索树，
+        请你计算树中任意两节点的差的绝对值的最小值。
+        '''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
