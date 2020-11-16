@@ -306,6 +306,24 @@ class SimpleTopic(TreeNode):
         给你一棵所有节点为非负值的二叉搜索树，
         请你计算树中任意两节点的差的绝对值的最小值。
         '''
+        def dfs(root):
+            if root is None:
+                return 
+            dfs(root.left)
+            if self.pre == -1:
+                self.pre = root.val
+            else:
+                self.res = min(self.res, abs(root.val-self.pre))
+                self.pre = root.val
+            dfs(root.right)
+            
+
+        self.res = float('inf')
+        self.pre = -1
+        dfs(root)
+        return self.res
+
+
 
 
 
