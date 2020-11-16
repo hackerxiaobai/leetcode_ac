@@ -323,6 +323,54 @@ class SimpleTopic(TreeNode):
         dfs(root)
         return self.res
 
+    def sumOfLeftLeaves(self, root: TreeNode) -> int:
+        '''
+        desc: 左叶子之和
+        计算给定二叉树的所有左叶子之和。
+        '''
+        def dfs(root, flag):
+            if root is None:
+                return 0
+            if root.left is None and root.right is None and flag=="left":
+                self.res += root.val
+            dfs(root.left, "left")
+            dfs(root.right, "right")
+
+        if root is None:
+            return 0
+        if root.left is None and root.right is None:
+            return 0
+        self.res = 0
+        flag = "left"
+        dfs(root, flag)
+        return self.res
+
+    def isUnivalTree(self, root: TreeNode) -> bool:
+        '''
+        desc: 单值二叉树
+        如果二叉树每个节点都具有相同的值，那么该二叉树就是单值二叉树。
+        只有给定的树是单值二叉树时，才返回 true；否则返回 false
+        '''
+         def dfs(root):
+            if root is None:
+                return True
+            if root.val != self.res:
+                return False
+            left = dfs(root.left)
+            right = dfs(root.right)
+            if left!=right:
+                return False
+            elif not left and not right:
+                return False  
+            else:
+                return True          
+        if root is None:
+            return True
+        self.res = root.val
+        return dfs(root)
+
+
+
 
 
 
