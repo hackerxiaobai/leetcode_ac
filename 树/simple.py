@@ -399,6 +399,17 @@ class SimpleTopic(TreeNode):
         我们给出了具有唯一值的二叉树的根节点 root，以及树中两个不同节点的值 x 和 y。
         只有与值 x 和 y 对应的节点是堂兄弟节点时，才返回 true。否则，返回 false。
         '''
+        
+        def dfs(node, par = None):
+            if node:
+                depth[node.val] = 1 + depth[par.val] if par else 0
+                parent[node.val] = par
+                dfs(node.left, node)
+                dfs(node.right, node)
+        parent = {}
+        depth = {}
+        dfs(root)
+        return depth[x] == depth[y] and parent[x] != parent[y]
 
 
 
