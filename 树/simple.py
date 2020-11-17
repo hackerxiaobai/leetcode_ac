@@ -399,7 +399,6 @@ class SimpleTopic(TreeNode):
         我们给出了具有唯一值的二叉树的根节点 root，以及树中两个不同节点的值 x 和 y。
         只有与值 x 和 y 对应的节点是堂兄弟节点时，才返回 true。否则，返回 false。
         '''
-        
         def dfs(node, par = None):
             if node:
                 depth[node.val] = 1 + depth[par.val] if par else 0
@@ -410,6 +409,42 @@ class SimpleTopic(TreeNode):
         depth = {}
         dfs(root)
         return depth[x] == depth[y] and parent[x] != parent[y]
+
+    def findTarget(self, root: TreeNode, k: int) -> bool:
+        '''
+        desc: 两数之和 IV - 输入 BST
+        给定一个二叉搜索树和一个目标结果，
+        如果 BST 中存在两个元素且它们的和等于给定的目标结果，则返回 true。
+        '''
+        def dfs(root, k, s):
+            if root is None:
+                return False
+            if (k-root.val) in s:
+                return True
+            s.add(root.val)
+            return dfs(root.left, k, s) or dfs(root.right, k, s)
+        s = set()
+        return dfs(root, k, s)
+
+    def diameterOfBinaryTree(self, root: TreeNode) -> int:
+        '''
+        desc: 二叉树的直径
+        给定一棵二叉树，你需要计算它的直径长度。
+        一棵二叉树的直径长度是任意两个结点路径长度中的最大值。
+        这条路径可能穿过也可能不穿过根结点。
+        '''
+        
+        def dfs(root):
+            if not root:
+                return 0 
+            left = dfs(root.left)
+            right = dfs(root.right)
+            self.res = max(self.res, left+right+1)
+            return left+right+1
+        self.res = 0
+        dfs(root)
+        return self.res -1
+
 
 
 
