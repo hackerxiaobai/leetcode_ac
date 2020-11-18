@@ -469,6 +469,104 @@ class SimpleTopic(TreeNode):
         if not root:
             return -1
         return dfs(root, root.val)
+
+    def averageOfLevels(self, root: TreeNode) -> List[float]:
+        '''
+        desc: 二叉树的层平均值
+        给定一个非空二叉树, 返回一个由每层节点平均值组成的数组。
+        '''
+        def dfs(root):
+            if not root:
+                return 
+            stack = [root]
+            new_stack = []
+            output = []
+            tmp = 0
+            count = n = len(stack)
+            while stack:
+                while n>0:
+                    node = stack.pop(0)
+                    tmp += node.val
+                    if node.left:
+                        new_stack.append(node.left)
+                    if node.right:
+                        new_stack.append(node.right)
+                    n-=1
+
+                output.append(tmp/count)
+                stack = new_stack
+                new_stack = []
+                tmp = 0
+                count = n = len(stack)
+            return output
+        return dfs(root)
+
+    def maxDepth(self, root: 'Node') -> int:
+        '''
+        desc: N叉树的最大深度
+        给定一个 N 叉树，找到其最大深度。
+        最大深度是指从根节点到最远叶子节点的最长路径上的节点总数。
+        '''
+        if root is None: 
+            return 0 
+        elif root.children == []:
+            return 1
+        else: 
+            height = [self.maxDepth(c) for c in root.children]
+            return max(height) + 1 
+
+    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+        '''
+        desc: 最小高度树
+        给定一个有序整数数组，元素各不相同且按升序排列，
+        编写一个算法，创建一棵高度最小的二叉搜索树。
+        '''
+        def dfs(nums, low, high):
+            if low>high:
+                return None
+            mid = low + (high-low)//2
+            node = TreeNode(nums[mid])
+            node.left = dfs(nums, low, mid-1)
+            node.right = dfs(nums, mid+1, high)
+            return node
+        return dfs(nums, 0, len(nums)-1)
+
+    def searchBST(self, root: TreeNode, val: int) -> TreeNode:
+        '''
+        desc: 二叉搜索树中的搜索
+        给定二叉搜索树（BST）的根节点和一个值。
+        你需要在BST中找到节点值等于给定值的节点。 
+        返回以该节点为根的子树。 如果节点不存在，则返回 NULL。
+        '''
+        if not root:
+            return None
+        if root.val>val:
+            root = root.left
+            return self.searchBST(root, val)
+        elif root.val<val:
+            root = root.right
+            return self.searchBST(root, val)
+        else:
+            return root
+
+    def rangeSumBST(self, root: TreeNode, low: int, high: int) -> int:
+        '''
+        desc: 二叉搜索树的范围和
+        给定二叉搜索树的根结点 root，返回值位于范围 [low, high] 之间的所有结点的值的和。
+        '''
+        def dfs(node):
+            if node:
+                if L <= node.val <= R:
+                    self.ans += node.val
+                if L < node.val:
+                    dfs(node.left)
+                if node.val < R:
+                    dfs(node.right)
+        self.ans = 0
+        dfs(root)
+        return self.ans
+
+
         
 
 
