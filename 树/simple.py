@@ -43,6 +43,20 @@ class SimpleTopic(TreeNode):
 			output.append(node.value)
 			stack.extend(node.children[::-1])
 		return output
+
+    def n_postorder(self, root: 'Node') -> List[int]:
+        # N叉树 的 后序遍历
+        def dfs(root):
+            if not root:
+                return []
+            stack = [root]
+            output = []
+            while stack:
+                node = stack.pop()
+                output.append(node.val)
+                stack.extend(node.children)
+            return output[::-1]
+        return dfs(root)    
 		
 	def isBalanced(self, root: TreeNode) -> bool:
 		# 平衡二叉树判定
@@ -566,9 +580,117 @@ class SimpleTopic(TreeNode):
         dfs(root)
         return self.ans
 
-
+    def minDepth(self, root: TreeNode) -> int:
+        '''
+        desc: 二叉树的最小深度
+        给定一个二叉树，找出其最小深度。
+        最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+        '''
+        def dfs(root):
+            if not root:
+                return 0
+            if not root.left and not root.right:
+                return 1
+            left = dfs(root.left)
+            right = dfs(root.right)
+            if not left or not right:
+                return left + right + 1
         
+            return min(left, right)+1
+        
+        self.res = float('inf')
+        return dfs(root)
 
+    def isBalanced(self, root: TreeNode) -> bool:
+        '''
+        desc: 检查平衡性
+              实现一个函数，检查二叉树是否平衡。
+              在这个问题中，平衡树的定义如下：任意一个节点，其两棵子树的高度差不超过 1。
+        '''
+        def dfs(root):
+            if not root:
+                return 0
+            left = dfs(root.left)
+            right = dfs(root.right)
+            if left==-1 or right==-1 or abs(left-right)>1:
+                return -1
+
+            return max(left, right) + 1
+        return dfs(root) != -1
+
+    def binaryTreePaths(self, root: TreeNode) -> List[str]:
+        '''
+        desc: 二叉树的所有路径
+        给定一个二叉树，返回所有从根节点到叶子节点的路径。
+        '''
+        def dfs(root):
+            if not root:
+                return []
+            if not root.left and not root.right:
+                return [str(root.val)]
+
+            ret = []
+            left = dfs(root.left)
+            right = dfs(root.right)
+            for i in left+right:
+                ret.append(str(root.val)+'->'+i)
+            return ret
+        return dfs(root)
+
+    def leafSimilar(self, root1: TreeNode, root2: TreeNode) -> bool:
+        '''
+        desc: 叶子相似的树
+        请考虑一棵二叉树上所有的叶子，
+        这些叶子的值按从左到右的顺序排列形成一个 叶值序列 。
+        '''
+        def dfs(root):
+            if not root:
+                return
+            if not root.left and not root.right:
+                self.l1.append(root.val)
+            dfs(root.left)
+            dfs(root.right)
+        
+        self.l1 = []
+        dfs(root1)
+        self.l2 = self.l1
+        self.l1 = []
+        dfs(root2)
+        return self.l1 == self.l2
+
+    def mirrorTree(self, root: TreeNode) -> TreeNode:
+        '''
+        desc: 二叉树的镜像
+        请完成一个函数，输入一个二叉树，该函数输出它的镜像。
+        '''
+        def dfs(root):
+            if not root:
+                return
+            tmp = root.left
+            root.left = dfs(root.right)
+            root.right = dfs(tmp)
+            return root
+        return dfs(root)
+
+    def convertBiNode(self, root: TreeNode) -> TreeNode:
+        '''
+        desc: 二叉树数据结构TreeNode可用来表示单向链表
+        （其中left置空，right为下一个链表节点）。
+        实现一个方法，把二叉搜索树转换为单向链表，
+        要求依然符合二叉搜索树的性质，转换操作应是原址的，
+        也就是在原始的二叉搜索树上直接修改。返回转换后的单向链表的头节点。
+        '''
+        def dfs(root):
+            if not root:
+                return None
+            dfs(root.left)
+            root.left = None
+            self.cur.right = root
+            self.cur = root
+            dfs(root.right)
+        self.ans = self.cur = TreeNode(0)
+        dfs(root)
+        return self.ans.right
 
 
 
