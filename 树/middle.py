@@ -9,7 +9,7 @@ class MiddleTopic(TreeNode):
 		（比如，若一棵树的深度为 D，则会创建出 D 个链表）。
 		返回一个包含所有深度的链表的数组。
 		'''
-		def dfs(tree):
+        def dfs(tree):
             if not tree:
                 return []
             stack = [tree]
