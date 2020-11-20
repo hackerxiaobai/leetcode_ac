@@ -598,7 +598,6 @@ class SimpleTopic(TreeNode):
         
             return min(left, right)+1
         
-        self.res = float('inf')
         return dfs(root)
 
     def isBalanced(self, root: TreeNode) -> bool:
@@ -692,32 +691,117 @@ class SimpleTopic(TreeNode):
         dfs(root)
         return self.ans.right
 
+    def findTilt(self, root: TreeNode) -> int:
+        '''
+        desc: 二叉树的坡度
+        给定一个二叉树，计算 整个树 的坡度 。
+        一个树的 节点的坡度 定义即为，该节点左子树的节点之和和右子树节点之和的 差的绝对值 。
+        如果没有左子树的话，左子树的节点之和为 0 ；没有右子树的话也是一样。空结点的坡度是 0 。
+        整个树 的坡度就是其所有节点的坡度之和。
+        '''
+        def dfs(root):
+            if not root:
+                return 0
+            if not root.left and not root.right:
+                self.res.append(0)
+                return root.val
+            left = dfs(root.left)
+            right = dfs(root.right)
+            if left!=0 and right!=0:
+                self.res.append(abs(left-right))
+                return left+right+root.val
+            if left==0:
+                self.res.append(abs(right-left))
+                return root.val + right
+            if right==0:
+                self.res.append(abs(left-right))
+                return root.val+left
+        self.res = []
+        dfs(root)
+        return sum(self.res)
+
+    def isSubtree(self, s: TreeNode, t: TreeNode) -> bool:
+        '''
+        desc: 另一个树的子树
+        给定两个非空二叉树 s 和 t，检验 s 中是否包含和 t 具有相同结构和节点值的子树。
+        s 的一个子树包括 s 的一个节点和这个节点的所有子孙。s 也可以看做它自身的一棵子树。
+        '''
+
+        def isSameTree(s, t):
+            if not s and not t:
+                return True
+            if not s or not t:
+                return False
+            return s.val == t.val and isSameTree(s.left, t.left) and isSameTree(s.right, t.right)
+        if not s and not t:
+            return True
+        if not s or not t:
+            return False
+        return isSameTree(s, t) or self.isSubtree(s.left, t) or self.isSubtree(s.right, t)
         
+    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+        '''
+        desc: 将有序数组转换为二叉搜索树
+        将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。
+        本题中，一个高度平衡二叉树是指一个二叉树每个节点 
+        的左右两个子树的高度差的绝对值不超过 1。
+        '''
+        def dfs(nums, low, high):
+            if low > high:
+                return None
+            mid = low + (high-low)//2
+            merge = TreeNode(nums[mid])
+            merge.left = dfs(nums, low, mid-1)
+            merge.right = dfs(nums, mid+1, high)
+            return merge
+        return dfs(nums, 0, len(nums)-1)
 
+    def lowestCommonAncestor(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+        '''
+        desc: 二叉树的最近公共祖先
+        最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，
+        最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大
+        （一个节点也可以是它自己的祖先）。
+        '''
+        if not root or root == p or root == q: return root
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+        if not left: return right
+        if not right: return left
+        return root
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def findMode(self, root: TreeNode) -> List[int]:
+        '''
+        desc: 二叉搜索树中的众数
+            给定一个有相同值的二叉搜索树（BST），
+            找出 BST 中的所有众数（出现频率最高的元素）。
+        假定 BST 有如下定义：
+            结点左子树中所含结点的值小于等于当前结点的值
+            结点右子树中所含结点的值大于等于当前结点的值
+            左子树和右子树都是二叉搜索树
+        '''
+        def dfs(root):
+            if not root:
+                return []
+            val = root.val
+            left = dfs(root.left)
+            right = dfs(root.right)
+            return left + [val] + right
+        
+        ret = []
+        cur, max_cur, last = 0, 0, None
+        for i in dfs(root):
+            if i == last:
+                cur += 1
+            else:
+                cur = 1
+            if cur>max_cur:
+                ret = [i]
+                max_cur = cur
+            elif cur==max_cur:
+                ret.append(i)
+            last = i
+        return ret
 
 
 
