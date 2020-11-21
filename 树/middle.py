@@ -58,6 +58,30 @@ class MiddleTopic(TreeNode):
             return merge
         return dfs(nums)
 
+    def searchTreeLeafNode(self, root: TreeNode) -> list:
+        '''
+        寻找二叉树的叶子节点
+        找到叶子节点，删除，在剩下的树中继续查找叶子节点
+        只要找到所有节点的高度，即可生成这样的结果数组。
+        '''
+        if not root:
+            return None
+        
+        res = []
+        def dfs(node):
+            if not node:
+                return 0
+            depth = max(dfs(node.left), dfs(node.right))
+            if len(res) < depth + 1:
+                res.append([])
+            res[depth].append(node.val)
+ 
+            return depth + 1
+        dfs(root)
+        return res
+
+
+
 
 
 
