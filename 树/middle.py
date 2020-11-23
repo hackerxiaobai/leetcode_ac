@@ -270,13 +270,102 @@ class MiddleTopic(TreeNode):
         注意，路径不一定非得从二叉树的根节点或叶节点开始或结束，
         但是其方向必须向下(只能从父节点指向子节点方向)。
         '''
-        pass
+        def dfs(root, s):
+            if not root:
+                return 0
+            res = 0
+            if root.val==s:
+                res += 1
+            res += dfs(root.left, s-root.val)
+            res += dfs(root.right, s-root.val)
+            return res
+        if not root:
+            return 0
+        return dfs(root, sum) + self.pathSum(root.left, sum) + self.pathSum(root.right, sum)
 
+    def subtreeWithAllDeepest(self, root: TreeNode) -> TreeNode:
+        '''
+        desc: 具有所有最深节点的最小子树
+        给定一个根为 root 的二叉树，每个节点的深度是 该节点到根的最短距离 。
+        如果一个节点在 整个树 的任意节点之间具有最大的深度，则该节点是 最深的 。
+        一个节点的 子树 是该节点加上它的所有后代的集合。
+        返回能满足 以该节点为根的子树中包含所有最深的节点 这一条件的具有最大深度的节点。
+        '''
+        depth = {None: -1}
+        def dfs(node, parent = None):
+            if node:
+                depth[node] = depth[parent] + 1
+                dfs(node.left, node)
+                dfs(node.right, node)
+        dfs(root)
+        max_depth = max(depth.values())
+        def answer(node):
+            # Return the answer for the subtree at node.
+            if not node or depth.get(node, None) == max_depth:
+                return node
+            L, R = answer(node.left), answer(node.right)
+            return node if L and R else L or R
+        return answer(root)
 
+    def delNodes(self, root: TreeNode, to_delete: List[int]) -> List[TreeNode]:
+        '''
+        desc: 删点成林
+        给出二叉树的根节点 root，树上每个节点都有一个不同的值。
+        如果节点值在 to_delete 中出现，我们就把该节点从树上删去，
+        最后得到一个森林（一些不相交的树构成的集合）。
+        返回森林中的每棵树。你可以按任意顺序组织答案。
+        '''
+        d = set(to_delete)
+        ans = [root] if root and root.val not in d else []
+        def dfs(node, p, arrow):
+            if not node: return 
+            dfs(node.left, node, 'left')
+            dfs(node.right, node, 'right')
+            if node.val in d:
+                if node.left: ans.append(node.left)
+                if node.right: ans.append(node.right)
+                if arrow == "left":
+                    p.left = None
+                elif arrow == "right":
+                    p.right = None
+        dfs(root, None, None)
+        return ans
 
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        '''
+        desc: 从前序与中序遍历序列构造二叉树
+        根据一棵树的前序遍历与中序遍历构造二叉树。
+        '''
+        def myBuildTree(preorder_left: int, preorder_right: int, inorder_left: int, inorder_right: int):
+            if preorder_left > preorder_right:
+                return None
+            preorder_root = preorder_left
+            inorder_root = index[preorder[preorder_root]]
+            root = TreeNode(preorder[preorder_root])
+            size_left_subtree = inorder_root - inorder_left
+            root.left = myBuildTree(preorder_left + 1,
+                                    preorder_left + size_left_subtree,
+                                    inorder_left, 
+                                    inorder_root - 1)
+            root.right = myBuildTree(preorder_left + size_left_subtree + 1,
+                                     preorder_right, 
+                                     inorder_root + 1, 
+                                     inorder_right)
+            return root
+        n = len(preorder)
+        index = {element: i for i, element in enumerate(inorder)}
+        return myBuildTree(0, n - 1, 0, n - 1)
 
-
-
+    def numTrees(self, n: int) -> int:
+        '''
+        desc: 不同的二叉搜索树
+        给定一个整数 n，求以 1 ... n 为节点组成的二叉搜索树有多少种？
+        卡塔兰数
+        '''
+        C = 1
+        for i in range(0, n):
+            C = C * 2*(2*i+1)/(i+2)
+        return int(C)
 
 
 
