@@ -111,7 +111,7 @@ class MiddleTopic(TreeNode):
             if root.right and abs(root.right.val - root.val)==1:
                 right = n + 1
                 self.m = max(self.m, right)
-                dfs(root.right, left)
+                dfs(root.right, right)
             else:
                 dfs(root.right, 1)
 
@@ -366,6 +366,12 @@ class MiddleTopic(TreeNode):
         for i in range(0, n):
             C = C * 2*(2*i+1)/(i+2)
         return int(C)
+
+    def flatten(self, root: TreeNode) -> None:
+        '''
+        desc: 二叉树展开为链表
+        给定一个二叉树，原地将它展开为一个单链表。
+        '''
 
 
 
