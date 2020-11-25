@@ -372,6 +372,21 @@ class MiddleTopic(TreeNode):
         desc: 二叉树展开为链表
         给定一个二叉树，原地将它展开为一个单链表。
         '''
+        preorderList = list()
+        stack = list()
+        node = root
+        while node or stack:
+            while node:
+                preorderList.append(node)
+                stack.append(node)
+                node = node.left
+            node = stack.pop()
+            node = node.right
+        size = len(preorderList)
+        for i in range(1, size):
+            prev, curr = preorderList[i - 1], preorderList[i]
+            prev.left = None
+            prev.right = curr
 
 
 
