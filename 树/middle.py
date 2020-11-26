@@ -388,7 +388,60 @@ class MiddleTopic(TreeNode):
             prev.left = None
             prev.right = curr
 
+    def rightSideView(self, root: TreeNode) -> List[int]:
+        '''
+        desc: 二叉树的右视图
+        给定一棵二叉树，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
+        '''
+        rightmost_value_at_depth = dict() 
+        max_depth = -1
+        stack = [(root, 0)]
+        while stack:
+            node, depth = stack.pop()
+            if node is not None:
+                max_depth = max(max_depth, depth)
+                rightmost_value_at_depth.setdefault(depth, node.val)
+                stack.append((node.left, depth+1))
+                stack.append((node.right, depth+1))
+        return [rightmost_value_at_depth[depth] for depth in range(max_depth+1)]
 
+    def maxProduct(self, root: TreeNode) -> int:
+        '''
+        desc: 分裂二叉树的最大乘积
+        给你一棵二叉树，它的根为 root 。请你删除 1 条边，使二叉树分裂成两棵子树，
+        且它们子树和的乘积尽可能大。
+        由于答案可能会很大，请你将结果对 10^9 + 7 取模后再返回。
+        '''
+        # def dfs(root: TreeNode, sum_list: List[int]):
+        #     if root is None:
+        #         return 0
+        #     ans = root.val + dfs(root.left, sum_list) + dfs(root.right, sum_list)
+        #     sum_list.append(ans)
+        #     return ans
+        # sum_list = []
+        # total_sum = dfs(root, sum_list)
+        # sum_list.sort()
+        # # 二分法找所有子树总和中最接近total_sum一半的一个，这样构造出来的两个子树和的乘积才可能是最大的
+        # target = total_sum // 2
+        # idx = bisect.bisect_left(sum_list, target)
+        # ans = sum_list[idx] * (total_sum - sum_list[idx])
+        # if idx >= 1:
+        #     ans = max(ans, sum_list[idx-1] * (total_sum - sum_list[idx-1]))
+        # return ans % 1000000007
+
+        def calculateSum(root):           
+            if not root:                      
+                return 0
+            res = root.val + calculateSum(root.left) + calculateSum(root.right)
+            self.arr.add(res)                 
+            return res                        
+        self.arr = set()                   
+        node_sum = calculateSum(root) 
+        res = 0
+        for i in self.arr:
+            res = max(res,i*(node_sum-i))  
+        res %= (10**9+7)                   # 求模
+        return res
 
 
 
