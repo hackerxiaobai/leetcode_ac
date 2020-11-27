@@ -443,6 +443,28 @@ class MiddleTopic(TreeNode):
         res %= (10**9+7)                   # 求模
         return res
 
+    def longestZigZag(self, root: TreeNode) -> int:
+        '''
+        desc: 二叉树中的最长交错路径
+        根到某一节点u 如果u是从它的父节点left 来的，
+        那么它的父的父肯定只能从 right 来
+        '''
+        maxans = 0
+        def dfs(o, direction, length):
+            if not o:
+                return
+            nonlocal maxans
+            maxans = max(maxans, length)
+            if direction == 0:
+                dfs(o.left, 1, length + 1)
+                dfs(o.right, 0, 1)
+            else:
+                dfs(o.right, 0, length + 1)
+                dfs(o.left, 1, 1)
+        dfs(root, 0, 0)
+        dfs(root, 1, 0)
+        return maxans
+
 
 
 
