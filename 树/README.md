@@ -1,5 +1,4 @@
 # leetcode_ac
-> 记录一些自己刷leetcode 的代码记录
 
 ### 树
 + 简单题
