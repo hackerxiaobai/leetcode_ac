@@ -1,4 +1,5 @@
 from base import ListNode
+import collections
 
 class Solution(ListNode):
 	def threeSumClosest(self, nums: List[int], target: int) -> int:
@@ -47,3 +48,69 @@ class Solution(ListNode):
                 head = head.next
         node1.next = tmp2.next
         return tmp1.next
+
+    def totalFruit(self, tree: List[int]) -> int:
+        '''
+        desc: 水果成篮
+        其实就是求一个数组中允许有两种值出现的最长子序列
+        '''
+        ans = i = 0
+        count = collections.Counter()
+        for j, x in enumerate(tree):
+            count[x] += 1
+            while len(count) >= 3:
+                count[tree[i]] -= 1
+                if count[tree[i]] == 0:
+                    del count[tree[i]]
+                i += 1
+            ans = max(ans, j - i + 1)
+        return ans
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
