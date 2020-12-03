@@ -66,6 +66,29 @@ class Solution(ListNode):
             ans = max(ans, j - i + 1)
         return ans
 
+    def minOperations(self, nums: List[int], x: int) -> int:
+        '''
+        desc: 将 x 减到 0 的最小操作数
+        给你一个整数数组 nums 和一个整数 x 。
+        每一次操作时，你应当移除数组 nums 最左边或最右边的元素，
+        然后从 x 中减去该元素的值。请注意，需要 修改 数组以供接下来的操作使用。
+        如果可以将 x 恰好 减到 0 ，返回 最小操作数 ；否则，返回 -1 。
+        '''
+        if sum(nums) == x:
+            return len(nums)
+        pre = [0]
+        for y in nums:
+            pre.append(pre[-1]+y)
+        t = sum(nums) - x
+        res = float('-inf')
+        dic = defaultdict(int)
+        for i, y in enumerate(pre):
+            if y - t in dic:
+                res = max(res, i-dic[y-t])
+            if y not in dic:
+                dic[y] = i
+        return len(nums) - res if res != float('-inf') else -1
+
 
 
 
