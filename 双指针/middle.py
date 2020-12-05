@@ -108,6 +108,42 @@ class Solution(ListNode):
             ans += (odd[i] - odd[i - 1]) * (odd[i + k] - odd[i + k - 1])
         return ans
 
+    def characterReplacement(self, s: str, k: int) -> int:
+        '''
+        desc: 替换后的最长重复字符
+        给你一个仅由大写英文字母组成的字符串，
+        你可以将任意位置上的字符替换成另外的字符，
+        总共可最多替换 k 次。在执行上述操作后，找到包含重复字母的最长子串的长度。
+        '''
+        char_counter = defaultdict(int)  
+        left = right = 0 
+        max_freq = 0  
+        while right < len(s): 
+            char_counter[s[right]] += 1
+            max_freq = max(max_freq, char_counter[s[right]])
+            if (right - left + 1) - max_freq > k: 
+                char_counter[s[left]] -= 1 
+                left += 1
+            right += 1
+        else:
+            return right - left
+
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        '''
+        desc: 无重复字符的最长子串
+        给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
+        '''
+        occ = set()
+        n = len(s)
+        rk, ans = -1, 0
+        for i in range(n):
+            if i != 0:
+                occ.remove(s[i - 1])
+            while rk + 1 < n and s[rk + 1] not in occ:
+                occ.add(s[rk + 1])
+                rk += 1
+            ans = max(ans, rk - i + 1)
+        return ans
 
 
 
