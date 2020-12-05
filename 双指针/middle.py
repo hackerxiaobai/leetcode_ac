@@ -89,6 +89,25 @@ class Solution(ListNode):
                 dic[y] = i
         return len(nums) - res if res != float('-inf') else -1
 
+    def numberOfSubarrays(self, nums: List[int], k: int) -> int:
+        '''
+        desc: 统计「优美子数组」
+        给你一个整数数组 nums 和一个整数 k。
+        如果某个 连续 子数组中恰好有 k 个奇数数字，我们就认为这个子数组是「优美子数组」。
+        请返回这个数组中「优美子数组」的数目。
+        '''
+        n = len(nums)
+        odd = [-1]
+        ans = 0
+        for i in range(n):
+            if nums[i] % 2 == 1:
+                odd.append(i)
+        odd.append(n)
+        print(odd)
+        for i in range(1, len(odd) - k):
+            ans += (odd[i] - odd[i - 1]) * (odd[i + k] - odd[i + k - 1])
+        return ans
+
 
 
 
