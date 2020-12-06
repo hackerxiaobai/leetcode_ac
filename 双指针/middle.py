@@ -145,6 +145,25 @@ class Solution(ListNode):
             ans = max(ans, rk - i + 1)
         return ans
 
+    def intervalIntersection(self, A: List[List[int]], B: List[List[int]]) -> List[List[int]]:
+        '''
+        desc: 区间列表的交集
+        给定两个由一些 闭区间 组成的列表，每个区间列表都是成对不相交的，
+        并且已经排序。返回这两个区间列表的交集。
+        '''
+        ans = []
+        i = j = 0
+        while i < len(A) and j < len(B):
+            lo = max(A[i][0], B[j][0])
+            hi = min(A[i][1], B[j][1])
+            if lo <= hi:
+                ans.append([lo, hi])
+            if A[i][1] < B[j][1]:
+                i += 1
+            else:
+                j += 1
+        return ans
+
 
 
 
