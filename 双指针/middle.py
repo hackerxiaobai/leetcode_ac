@@ -198,6 +198,30 @@ class Solution(ListNode):
         if i>=j or a[i:j+1]==a[i:j+1][::-1] or b[i:j+1]==b[i:j+1][::-1]:return True
         return False
 
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        '''
+        desc: 三数之和
+        给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，
+        使得 a + b + c = 0 ？请你找出所有满足条件且不重复的三元组。
+        '''
+        n = len(nums)
+        nums.sort()
+        ans = list()
+        for first in range(n):
+            if first > 0 and nums[first] == nums[first - 1]:
+                continue
+            third = n - 1
+            target = -nums[first]
+            for second in range(first + 1, n):
+                if second > first + 1 and nums[second] == nums[second - 1]:
+                    continue
+                while second < third and nums[second] + nums[third] > target:
+                    third -= 1
+                if second == third:
+                    break
+                if nums[second] + nums[third] == target:
+                    ans.append([nums[first], nums[second], nums[third]])
+        return ans
 
 
 
