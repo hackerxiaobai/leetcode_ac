@@ -185,6 +185,19 @@ class Solution(ListNode):
         new_tail.next = None
         return new_head
 
+    def checkPalindromeFormation(self, a: str, b: str) -> bool:
+        '''
+        desc: 分割两个字符串得到回文串
+        '''
+        n=len(a)
+        if a==a[::-1] or b==b[::-1]:return True
+        i,j=0,n-1
+        while i<=j and (a[i]==b[j] or b[i]==a[j]):
+            i+=1
+            j-=1
+        if i>=j or a[i:j+1]==a[i:j+1][::-1] or b[i:j+1]==b[i:j+1][::-1]:return True
+        return False
+
 
 
 
