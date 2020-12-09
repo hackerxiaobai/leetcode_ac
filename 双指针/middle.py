@@ -263,6 +263,24 @@ class Solution(ListNode):
                         right -= 1
         return quadruplets
 
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        '''
+        desc: 字符串的排列
+        给定两个字符串 s1 和 s2，写一个函数来判断 s2 是否包含 s1 的排列。
+        换句话说，第一个字符串的排列之一是第二个字符串的子串。
+        '''
+        if len(s1) > len(s2):
+            return False
+        c1 = {k:0 for k in string.ascii_lowercase}
+        cur = {k:0 for k in string.ascii_lowercase}
+        for a in s1: c1[a] += 1
+        for i in range(len(s2)):
+            cur[s2[i]] += 1
+            if i >= len(s1):
+                cur[s2[i - len(s1)]] -= 1
+            if c1 == cur: return True
+        return False
+
 
 
 
