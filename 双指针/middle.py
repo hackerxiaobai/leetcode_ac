@@ -281,6 +281,23 @@ class Solution(ListNode):
             if c1 == cur: return True
         return False
 
+    def longestOnes(self, A: List[int], K: int) -> int:
+        '''
+        desc: 最大连续1的个数 III
+        给定一个由若干 0 和 1 组成的数组 A，我们最多可以将 K 个值从 0 变成 1 。
+        返回仅包含 1 的最长（连续）子数组的长度。
+        '''
+        left, right = 0, 0
+        count = 0
+        for right in range(len(A)): 
+            if A[right] == 0:       
+                count += 1
+            if count > K:           
+                if A[left] == 0:    
+                    count -= 1
+                left += 1           
+        return right - left + 1  
+
 
 
 
