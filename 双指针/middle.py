@@ -298,28 +298,54 @@ class Solution(ListNode):
                 left += 1           
         return right - left + 1  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def balancedString(self, s: str) -> int:
+        '''
+        替换子串得到平衡字符串
+        有一个只含有 'Q', 'W', 'E', 'R' 四种字符，且长度为 n 的字符串。
+        假如在该字符串中，这四个字符都恰好出现 n/4 次，那么它就是一个「平衡字符串」。
+        给你一个这样的字符串 s，请通过「替换一个子串」的方式，使原字符串 s 变成一个「平衡字符串」。
+        你可以用和「待替换子串」长度相同的 任何 其他字符串来完成替换。
+        请返回待替换子串的最小可能长度。如果原字符串自身就是一个平衡字符串，则返回 0。
+        '''
+        if not s:
+            return 0
+        # 统计每个字符的个数
+        s_c = dict(Counter(s))
+        # 统计哪些字符需要替换，以及需要被替换的个数
+        s_replaced = dict()
+        for ch, _c in s_c.items():
+            if _c > len(s) // 4:
+                s_replaced[ch] = _c - len(s) // 4
+        # 滑窗左边界
+        left = 0
+        # 滑窗右边界
+        right = 0
+        # 表示滑窗内包含的需要被替换的字符及其个数
+        origin_chs = {ch: 0 for ch in s_replaced.keys()}
+        rst = float('inf')
+        while right < len(s):
+            ch = s[right]
+            if ch not in origin_chs:
+                # 如果该字符不在需要替换的滑窗内，跳过，右边界前进，扩大窗口
+                right += 1
+                continue
+            # 找到一个需要替换的字符，相应个数+1
+            origin_chs[ch] += 1
+            if any([origin_chs[_ch] < s_replaced[_ch] for _ch in origin_chs.keys()]):
+                # 当需要被替换的字符有任何一个没有达到替换的个数时，右边界前进，扩大窗口
+                right += 1
+            else:
+                # 都达到个数后，开始处理
+                # 将前面预先加上的字符去掉
+                origin_chs[ch] -= 1
+                # 更新最小值
+                rst = min(rst, right - left + 1)
+                # 如果将要移出窗口的字符在需要替换的字符中，移出后，相应个数减一
+                if s[left] in origin_chs:
+                    origin_chs[s[left]] -= 1
+                # 左边界前进，缩小窗口
+                left += 1
+        return 0 if rst == float('inf') else rst
 
 
 
