@@ -143,7 +143,6 @@ class SimpleTopic(TreeNode):
     	def dfs(root, target):
     		if root is None:
     			return []
-
     		if root.left is None and root.right is None and root.val==target:
     			return [[root.val]]
     		ret = []
@@ -227,7 +226,6 @@ class SimpleTopic(TreeNode):
             return t2
         if not t2:
             return t1
-        
         merged = TreeNode(t1.val + t2.val)
         merged.left = self.mergeTrees(t1.left, t2.left)
         merged.right = self.mergeTrees(t1.right, t2.right)
@@ -279,11 +277,11 @@ class SimpleTopic(TreeNode):
     	'''
         if not root:
             return root
-        
         left = self.invertTree(root.left)
         right = self.invertTree(root.right)
         root.left, root.right = right, left
         return root
+    
     def lowestCommonAncestor(self, root: TreeNode, p: int, q: int) -> TreeNode:
     	'''
 		desc: 二叉搜索树的最近公共祖先
@@ -329,8 +327,6 @@ class SimpleTopic(TreeNode):
                 self.res = min(self.res, abs(root.val-self.pre))
                 self.pre = root.val
             dfs(root.right)
-            
-
         self.res = float('inf')
         self.pre = -1
         dfs(root)
@@ -348,7 +344,6 @@ class SimpleTopic(TreeNode):
                 self.res += root.val
             dfs(root.left, "left")
             dfs(root.right, "right")
-
         if root is None:
             return 0
         if root.left is None and root.right is None:
@@ -446,7 +441,6 @@ class SimpleTopic(TreeNode):
         一棵二叉树的直径长度是任意两个结点路径长度中的最大值。
         这条路径可能穿过也可能不穿过根结点。
         '''
-        
         def dfs(root):
             if not root:
                 return 0 
@@ -594,9 +588,7 @@ class SimpleTopic(TreeNode):
             right = dfs(root.right)
             if not left or not right:
                 return left + right + 1
-        
             return min(left, right)+1
-        
         return dfs(root)
 
     def isBalanced(self, root: TreeNode) -> bool:
@@ -612,7 +604,6 @@ class SimpleTopic(TreeNode):
             right = dfs(root.right)
             if left==-1 or right==-1 or abs(left-right)>1:
                 return -1
-
             return max(left, right) + 1
         return dfs(root) != -1
 
@@ -626,7 +617,6 @@ class SimpleTopic(TreeNode):
                 return []
             if not root.left and not root.right:
                 return [str(root.val)]
-
             ret = []
             left = dfs(root.left)
             right = dfs(root.right)
@@ -648,7 +638,6 @@ class SimpleTopic(TreeNode):
                 self.l1.append(root.val)
             dfs(root.left)
             dfs(root.right)
-        
         self.l1 = []
         dfs(root1)
         self.l2 = self.l1
@@ -725,7 +714,6 @@ class SimpleTopic(TreeNode):
         给定两个非空二叉树 s 和 t，检验 s 中是否包含和 t 具有相同结构和节点值的子树。
         s 的一个子树包括 s 的一个节点和这个节点的所有子孙。s 也可以看做它自身的一棵子树。
         '''
-
         def isSameTree(s, t):
             if not s and not t:
                 return True
@@ -786,7 +774,6 @@ class SimpleTopic(TreeNode):
             left = dfs(root.left)
             right = dfs(root.right)
             return left + [val] + right
-        
         ret = []
         cur, max_cur, last = 0, 0, None
         for i in dfs(root):
