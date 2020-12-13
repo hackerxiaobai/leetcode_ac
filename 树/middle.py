@@ -66,7 +66,6 @@ class MiddleTopic(TreeNode):
         '''
         if not root:
             return None
-        
         res = []
         def dfs(node):
             if not node:
@@ -75,7 +74,6 @@ class MiddleTopic(TreeNode):
             if len(res) < depth + 1:
                 res.append([])
             res[depth].append(node.val)
- 
             return depth + 1
         dfs(root)
         return res
@@ -114,7 +112,6 @@ class MiddleTopic(TreeNode):
                 dfs(root.right, right)
             else:
                 dfs(root.right, 1)
-
         if not root:
             return 0 
         self.m = 1
