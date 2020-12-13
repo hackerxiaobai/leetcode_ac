@@ -111,7 +111,6 @@ class SimpleTopic(TreeNode):
 			left = midorder(root.left)
 			right = midorder(root.right)
 			return left + [val] + right
-        
         cur = head = TreeNode(None)
         for v in midorder(root):
             cur.right = TreeNode(v)
@@ -119,10 +118,10 @@ class SimpleTopic(TreeNode):
 		return head.right
 
 	def kthLargest(self, root: TreeNode, k: int) -> int:
-		'''
-		desc:  二叉搜索树的第k大节点
-				给定一棵二叉搜索树，请找出其中第k大的节点。
-		'''
+        '''
+        desc:  二叉搜索树的第k大节点
+                给定一棵二叉搜索树，请找出其中第k大的节点。
+        '''
     	def dfs(root):
             if not root: return
             dfs(root.right)
