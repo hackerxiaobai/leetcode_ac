@@ -143,7 +143,6 @@ class MiddleTopic(TreeNode):
             else:
                 return [t]
             return left + right
-
         self.res = 0
         dfs(root, 0)
         return self.res
@@ -250,12 +249,11 @@ class MiddleTopic(TreeNode):
             if not root:
                 return True
             left = dfs(root.left)
-            if self.pre!=None and pre.val>=root.val:
+            if self.pre!=None and self.pre.val>=root.val:
                 return False
             self.pre = root
             right = dfs(root.right)
             return left and right
-            
         self.pre = TreeNode(None)
         return dfs(root)
 
