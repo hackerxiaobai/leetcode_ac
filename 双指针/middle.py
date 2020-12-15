@@ -74,20 +74,26 @@ class Solution(ListNode):
         然后从 x 中减去该元素的值。请注意，需要 修改 数组以供接下来的操作使用。
         如果可以将 x 恰好 减到 0 ，返回 最小操作数 ；否则，返回 -1 。
         '''
-        if sum(nums) == x:
-            return len(nums)
-        pre = [0]
-        for y in nums:
-            pre.append(pre[-1]+y)
-        t = sum(nums) - x
-        res = float('-inf')
-        dic = defaultdict(int)
-        for i, y in enumerate(pre):
-            if y - t in dic:
-                res = max(res, i-dic[y-t])
-            if y not in dic:
-                dic[y] = i
-        return len(nums) - res if res != float('-inf') else -1
+        sum_val = sum(nums)
+        length = len(nums)
+        if sum_val < x:
+            return -1
+        if sum_val == x:
+            return length
+        target = sum_val - x
+        left, right = 0, 0
+        # 累加和
+        cur_val = 0
+        res = float('inf')
+        while right < length:
+            cur_val += nums[right]
+            while cur_val >= target and left <= right:
+                if cur_val == target:
+                    res = min(res, length - right + left - 1)
+                cur_val -= nums[left]
+                left += 1
+            right += 1
+        return res if res != float('inf') else -1
 
     def numberOfSubarrays(self, nums: List[int], k: int) -> int:
         '''
@@ -103,7 +109,6 @@ class Solution(ListNode):
             if nums[i] % 2 == 1:
                 odd.append(i)
         odd.append(n)
-        print(odd)
         for i in range(1, len(odd) - k):
             ans += (odd[i] - odd[i - 1]) * (odd[i + k] - odd[i + k - 1])
         return ans
@@ -167,6 +172,7 @@ class Solution(ListNode):
     def rotateRight(self, head: ListNode, k: int) -> ListNode:
         '''
         desc: 旋转链表
+        给定一个链表，旋转链表，将链表每个节点向右移动 k 个位置，其中 k 是非负数。
         '''
         if not head:
             return None
