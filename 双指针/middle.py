@@ -395,6 +395,24 @@ class Solution(ListNode):
             end += 1
         return 0 if ans == n + 1 else ans
 
+    def permutation(self, s: str) -> List[str]:
+        '''
+        desc: 字符串的排列
+        输入一个字符串，打印出该字符串中字符的所有排列。
+        你可以以任意顺序返回这个字符串数组，但里面不能有重复元素。
+        '''
+        self.res = []
+        n = len(s)
+        def backtrack(s, path):
+            if not s:
+                self.res.append(path)
+            seen = set()
+            for i in range(len(s)):
+                if s[i] in seen: continue
+                seen.add(s[i])
+                backtrack(s[:i]+s[i+1:], path + s[i])
+        backtrack(s, "")
+        return self.res
 
 
 
