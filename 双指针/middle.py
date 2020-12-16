@@ -362,7 +362,6 @@ class Solution(ListNode):
         n = len(A)
         left = [0] * n
         for i in range(1, n):
-            
             left[i] = left[i - 1] + 1 if A[i - 1] < A[i] else 0
         right = [0] * n
         for i in range(n - 2, -1, -1):
@@ -414,9 +413,23 @@ class Solution(ListNode):
         backtrack(s, "")
         return self.res
 
-
-
-
+    def findLongestWord(self, s: str, d: List[str]) -> str:
+        '''
+        desc: 通过删除字母匹配到字典里最长单词
+        给定一个字符串和一个字符串字典，找到字典里面最长的字符串，
+        该字符串可以通过删除给定字符串的某些字符来得到。如果答案不止一个，
+        返回长度最长且字典顺序最小的字符串。如果答案不存在，则返回空字符串。
+        '''
+        res = ""
+        for str_d in d:
+            j = 0
+            for i in range(len(s)):
+                if j < len(str_d):
+                    if s[i] == str_d[j]: j += 1
+                    if j == len(str_d):
+                        if (len(str_d)>len(res)) or (len(str_d) == len(res) and str_d<res):
+                            res = str_d
+        return res
 
 
 
