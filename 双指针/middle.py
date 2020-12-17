@@ -448,6 +448,42 @@ class Solution(ListNode):
             j -= 1
         return ans
 
+    def smallestDifference(self, a: List[int], b: List[int]) -> int:
+        '''
+        desc: 最小差
+        给定两个整数数组a和b，计算具有最小差绝对值的一对数值（每个数组中取一个值），并返回该对数值的差
+        '''
+        if not a or not b:
+            return 0
+        a.sort()
+        b.sort()
+        a_index = 0
+        b_index = 0
+        diff = float('inf')
+        while a_index < len(a) and b_index < len(b):
+            diff = min(diff, abs(a[a_index] - b[b_index]))
+            if a[a_index] - b[b_index] > 0:
+                b_index += 1
+            else:
+                a_index += 1
+        return abs(diff)
+
+    def findClosest(self, words: List[str], word1: str, word2: str) -> int:
+        '''
+        desc: 单词距离
+        有个内含单词的超大文本文件，给定任意两个单词，
+        找出在这个文件中这两个单词的最短距离(相隔单词数)。
+        如果寻找过程在这个文件中会重复多次，而每次寻找的单词不同，你能对此优化吗?
+        '''
+        i, ans = 0, len(words)
+        for j, word in enumerate(words):
+            if word == word1 or word == word2:  # 遇到两个词之一
+                if word != words[i] and (words[i] == word1 or words[i] == word2):
+                    ans = min(ans, j - i) 
+                i = j       # 每次都更新 i即可指向word1也可指向word2               
+        return ans
+
+
 
 
 
