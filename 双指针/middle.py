@@ -1,4 +1,5 @@
 from base import ListNode
+from typing import List
 import collections
 
 class Solution(ListNode):
@@ -501,6 +502,24 @@ class Solution(ListNode):
             pos_dict[n] = i
         return max(ans, pre_num[-1] - pre_num[start])
 
+    def partitionLabels(self, S: str) -> List[int]:
+        '''
+        划分字母区间
+        字符串 S 由小写字母组成。我们要把这个字符串划分为尽可能多的片段，
+        同一字母最多出现在一个片段中。返回一个表示每个字符串片段的长度的列表。
+        '''
+        maxIndex = dict()
+        for i in range(len(S)):
+            maxIndex[S[i]] = i
+        ans = list()
+        start = 0
+        end = 0
+        for i in range(len(S)):
+            end = max(maxIndex[S[i]], end)
+            if i == end:
+                ans.append(end - start + 1)
+                start = end + 1
+        return ans
 
 
 
